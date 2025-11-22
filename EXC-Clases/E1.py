@@ -18,7 +18,7 @@ for prod in lista_de_productos:
   if prod.categoria == 'Refresco':
     print(prod.nombre)
 
-class alumno:
+class Alumno:
   def __init__(self,nombre,notas):
     self.nombre = nombre
     self.notas = notas # atributo de lista
@@ -31,5 +31,5 @@ class alumno:
       print(f"{self.diccionario[self.nombre]} = {suma}")
 
 notitas = [10,10,9,9,9,6]
-Luisito = alumno('Luis',notitas)
+Luisito = Alumno('Luis',notitas)
 Luisito.promedio()
