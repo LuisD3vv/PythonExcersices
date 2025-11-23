@@ -1,0 +1,29 @@
+Se considera True si devuelve un valor truthy
+
+Ejemplos de valores truthy:
+
+Cualquier número distinto de 0
+
+Cualquier string NO vacío
+
+Cualquier lista/tupla/set/dict NO vacía
+
+Cualquier objeto personalizado que no defina lo contrario
+
+Obviamente True
+
+❌ Se considera False si devuelve un valor falsy
+
+Valores falsy:
+
+None
+
+False
+
+0, 0.0
+
+"" (cadena vacía)
+
+[], {}, ()
+
+Objetos que implementan métodos especiales indicando “vacío”
