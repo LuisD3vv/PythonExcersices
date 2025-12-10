@@ -12,10 +12,10 @@ for clave, valor in divisas.items():
         esta = True
         break
     
-if esta:
-    print(f"Si se ecuentra en el diccionario la divisa {divisas[usuario]}")
+if esta: 
+    print(f"Si se encuentra en el diccionario la divisa {divisas[usuario]}")
 else:
-    print("No se euentra la divisa")
+    print("No se encuentra la divisa")
 
 # forma de IA mas pythonica
 
