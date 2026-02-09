@@ -1,0 +1,14 @@
+Left 4 Dead es un videojuego de terror de disparos en primera persona desarrollado
+por Valve South y publicado por Valve. El juego utiliza el motor gráfico de Valve,
+Source, y está disponible para Microsoft Windows, Xbox 360 y macOS. Fue lanzado
+originalmente para Microsoft Windows y Xbox 360 en noviembre de 2008 y para Mac OS
+X en octubre de 2010, y es el primer título de la serie Left 4 Dead. Ambientado
+tras un brote de zombis en la costa este de Estados Unidos, el juego enfrenta a sus
+cuatro protagonistas, apodados los "Supervivientes", contra hordas de infectados.
+Left 4 Dead utiliza el motor Source patentado de Valve, con cuatro modos de juego:
+un modo para un jugador en el que los personajes aliados son controlados por IA, un 
+modo de campaña cooperativa para cuatro jugadores, un modo versus en línea para 
+ocho jugadores y un modo de supervivencia para cuatro jugadores. En todos los 
+modos, una inteligencia artificial llamada "Director" controla el ritmo de los 
+niveles y la ubicación de los elementos en un intento de crear una experiencia 
+dinámica y aumentar el valor de rejugabilidad.

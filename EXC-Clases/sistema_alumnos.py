@@ -15,7 +15,7 @@ class Curso:
     def agregar_alumnos(self,nombre):
         self.lista_alumnos.append(nombre)
     def mostrar_promedio(self,nombre):
-        pass
+        passWWW
 
 calif= [8,7,8,7,9,9]
 Lissandrito = Alumno('Luis')

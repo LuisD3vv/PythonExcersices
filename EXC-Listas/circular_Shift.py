@@ -23,7 +23,7 @@ def rotate_list(input_list,n,direction):
         return input_list[n:] + input_list[:n]
         
 
-data  =[1,2,3,4,5,6,7,8,9,10]
+data  = [1,2,3,4,5,6,7,8,9,10]
 print(f"Turno derecha 2: {rotate_list(data,12,'right')}") 
 print(f"Turno 3 izquierda {rotate_list(data,3,'left')}") 
 '''

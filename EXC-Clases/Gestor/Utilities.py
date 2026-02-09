@@ -10,7 +10,7 @@ def Clear():
 
 def print_header():
     print(Back.BLACK + Fore.GREEN + "Springvale ADMIN Management Menu")
-    print("="*28)
+    print("-"*32)
 
 def print_format():
     return ""

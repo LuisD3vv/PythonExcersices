@@ -1,7 +1,6 @@
-from main import Student,Course,Teacher
+from main import Student, Course, Teacher
 import db
-import Utilities as U
-from colorama import init,Fore,Back,Cursor,Style
+from colorama import Fore, Style, Back
 from time import sleep
 import datetime
 
@@ -20,10 +19,11 @@ fetchone -> resultado del query (solicitud traida)
 """
 
 # Separar responsabilidades
-'''Students'''
+"""Students"""
+
+
 def add_student():
-    U.Clear()
-    print("Student Add Menu")
+    print("====--- Student Add Menu ---====")
     nombre = input("Student name: ").capitalize().strip()
     apellido = input("Student Lastname: ").capitalize().strip()
     while True:
@@ -33,31 +33,34 @@ def add_student():
             break
         except TypeError:
             print("The Student id must be a number.")
-    newstudent = Student(nombre,apellido,noCuenta)
-    con = db.databaseManage()
-    cur = con.cursor()
-    # insertar estudiante
-    cur.execute("""INSERT INTO Student (Student_id,nombre,apellido) values(?,?,?)""",(noCuenta,nombre,apellido))
+    if Student(nombre, apellido, noCuenta):
+        con = db.databaseManage()
+        cur = con.cursor()
+        # insertar estudiante
+        cur.execute("""INSERT INTO Student (Student_id, nombre, apellido)
+                       values (?, ?, ?)""", (noCuenta, nombre, apellido))
     con.commit()
     # verificar que si se creo
-    cur.execute("""SELECT Student_id FROM Student WHERE Student_id = ?""",(noCuenta,))
+    cur.execute("""SELECT Student_id
+                   FROM Student
+                   WHERE Student_id = ?""", (noCuenta,))
     con.commit()
     print("Student created successfully")
     sleep(2)
-    U.Clear()
+
     con.commit()
     con.close()
-    return Student(nombre,apellido,noCuenta)
+    return Student(nombre, apellido, noCuenta)
+
 
 def drop_student():
-    U.Clear()
     noCuenta = input("Write the Student number to eliminate.")
     con = db.databaseManage()
     cur = con.cursor()
     # eliminar al estudiante
-    cur.execute("""DELETE FROM Student WHERE Student_id = ?""",(noCuenta,))
+    cur.execute("""DELETE FROM Student WHERE Student_id = ?""", (noCuenta,))
     # verificar si hubo cambios en alguna fila (registro) de ser asi, entonces se imprime.
-    salio = con.rowcount()
+    salio = cur.rowcount()
     if salio == 1:
         print("Student Eliminated successfully")
     else:
@@ -66,7 +69,7 @@ def drop_student():
     con.close()
 
 def modify_student():
-    noCuenta = input("Student account number to be modified: ")
+    noCuenta = input("Type the Student account number to be modified: ")
     con = db.databaseManage()
     cur = con.cursor()
     cur.execute("""SELECT nombre FROM Student WHERE Student_id = ? """,(noCuenta,))
@@ -80,7 +83,7 @@ def modify_student():
         UPDATE Student SET nombre = ?, apellido = ?, Student_id = ? WHERE Student_id = ?
         """,(Newname,Newlastname,Naccount,noCuenta))
         con.commit()
-        if con.rowcount() == 1:
+        if cur.rowcount == 1:
             print("IMPORTANT, the student's account number has changed.")
             print("Consider this when you look information about this student.")
         else:
@@ -90,22 +93,21 @@ def modify_student():
         print("Student Not found.")
 
 def show_students():
-    U.Clear()
-    print("Showing enrolled students")
+    print("Showing enrolled students\n")
     con = db.databaseManage()
     cur = con.cursor()
     cur.execute("SELECT * FROM Student")
     salio2 = cur.fetchall()
     print("==============================")
-    print("Name | Lastname | No.Account")
+    print(Back.BLACK + Fore.GREEN + "Name | Lastname | No.Account")
     print("==============================")
-    for stuid,name,lastname in salio2:
-        print(f"{name} {lastname} - {stuid}")
+    for stuid, name, lastname in salio2:
+        print(f"{name} {lastname}  {Fore.GREEN + str(stuid)}")
     print("==============================")
     input("Press enter to continue...")
     con.close()
 
-def search_student():
+def search_student(courseRol=None):
     con = db.databaseManage()
     cur = con.cursor()
     print("Select the search type\n1) Student ID/Account Number\n2) Complete Name")
@@ -113,15 +115,15 @@ def search_student():
     if searchStudent == '1':
         print("Write the student's id")
         searchStudentID = input(">> ")
-        cur.execute("SELECT * FROM Student WHERE Student_id = ?",(searchStudentID,))
-        userget = con.fetchone()
+        cur.execute("SELECT * FROM Student WHERE Student_id = ?", (searchStudentID,))
+        userget = cur.fetchone()
         if userget is None:
             print(f"No student found with id: {searchStudentID}")
         else:
-            print("Student found")
+            print("-- Student found --")
             print("Displaying info")
-            (Studentid,name,lastname) = userget
-            print(f"Student: [{name}] [{lastname}] with -{Studentid}- id.")
+            (Studentid, name, lastname) = userget
+            print(f"Student: [{name}] [{lastname}] with {Studentid} id.")
             print("Enrolled in")
             cur.execute("""
             SELECT
@@ -135,62 +137,74 @@ def search_student():
                 ON Courses.Course_ID = Enrollment.Coursid
             JOIN Teachers
                 ON Teachers.Teacher_id =  Courses.Teacher_id
-            WHERE Student_id = ?
-            """,(searchStudentID,))
+            WHERE Student_id = ?""",(searchStudentID,))
             coursesRol = cur.fetchall()
-            for StudentName,courseName,TeacherName in coursesRol:
-                print(StudentName,courseName,TeacherNamet)
+            for StudentName, courseName, TeacherName in coursesRol:
+                print(StudentName, courseName, TeacherName)
     elif searchStudent == '2':
         print("Write the student's name(s)")
         searchStudentName = input(">> ").strip()
         print("Write the student's lastname")
         searchStudentLastName = input(">> ").strip()
-        cur.execute("""SELECT * FROM Student WHERE nombre = ? AND apellido = ? """,(searchStudentName,searchStudentLastName))
+        cur.execute("""SELECT * FROM Student WHERE nombre = ? AND apellido = ? """, (searchStudentName, searchStudentLastName))
         userget = cur.fetchone()
         if userget is None:
             print("No student found with name and lastname")
         else:
-            print("Student found")
-            (Studentid,name,lastname) = userget
-            print(f"Student {name} {lastname} with -{Studentid}- id.")
+            print("--- Student found ---")
+            (Studentid, name, lastname) = userget
+            print(f"Student {name} {lastname} with {Studentid} id.")
             print("Enrolled in")
+            cur.execute("""
+                SELECT
+                    T.name as 'Teacher Name',
+                    Course_Topic as 'Course Name'
+                FROM
+                    Enrollment
+                JOIN main.Student S on Enrollment.Stuid = S.Student_id
+                JOIN main.Courses C on Enrollment.Coursid = C.Course_ID
+                JOIN main.Teachers T on C.Teacher_id = T.Teacher_id
+                WHERE nombre = ?""",(name,))
+            courseRol = cur.fetchall()
+            for i in courseRol:
+                print(i*)
     con.close()
+    input("Presiona para continuar: ")
 
-'''Courses'''
-def add_course():
+"""Courses"""
+
+
+def addCourse():
     con = db.databaseManage()
     cur = con.cursor()
     while True:
         print("Input the Solicited Values")
-        CTopic= input("Course Topic: ").capitalize().strip()
+        CTopic = input("Course Topic: ")
         CDuration = input("Duration (in minutes): ")
-        CRating = input("Rating: (0/5) ")
-        CTeacher = input("Teacher's Name: ").capitalize().strip()
-        CTeacherLastname = input("Teacher's Lastame: ").capitalize().strip()
+        CRating = input("Rating (0/5): ")
+        CTeacher = input("Teacher's Name: ").strip()
+        CTeacherLastname = input("Teacher's Lastame: ").strip()
         # Buscar el id de profesor mediante su nombre mas sencillo para la busqueda
-        cur.execute("""SELECT Teacher_id FROM Teachers WHERE Name = ? and Lastname = ?""",(CTeacher,CTeacherLastname))
+        cur.execute("""SELECT Teacher_id FROM Teachers WHERE Name = ? and Lastname = ?""", (CTeacher, CTeacherLastname))
         getID = cur.fetchone() 
     # Ahora si buscamos por su id
-        if getID == None:
-            U.Clear()
+        if getID is None:
             print(f"no coincidences for teacher with name: {CTeacher}")
+
         else:
             print(f"Teacher_id debug {getID[0]}")
-            newcourse = Course(CTopic,float(CDuration),CRating,getID[0])
-            cur.execute("""
-            INSERT INTO Courses (Course_Topic,Course_Duration,Course_Rating,Teacher_id) VALUES (?,?,?,?)
-            """,(CTopic,CDuration,CRating,getID[0]))
-            con.commit()
-            print("Course created successfully")
-            break
+            if Course(CTopic, float(CDuration), CRating, getID[0]):
+                cur.execute("""INSERT INTO Courses (Course_Topic,Course_Duration,Course_Rating,Teacher_id) VALUES (?,?,?,?)""", (CTopic, CDuration, CRating, getID[0]))
+                con.commit()
+                print("Course created successfully")
+                break
     con.close()
 
-def show_courses():
+def showCourses():
     con = db.databaseManage()
     cur = con.cursor()
     cur.execute("SELECT * FROM Courses")
     impresionconsos = cur.fetchall()
-    U.Clear()
     print("Available Courses")
     print("==================================================")
     print(f"|   Course  |  Duration  |  Rating  |  Teacher   |")
@@ -204,41 +218,49 @@ def show_courses():
     print("=================================================\n")
     input("Click to continue ")
     con.close()
-    U.Clear()
 
-'''Teachers'''
-def add_teacher():
+
+"""Teachers"""
+
+def addTeacher():
     con = db.databaseManage()
     cur = con.cursor()
     print("Menu for Add a Teacher")
     tname = input("Enter Teacher's Name: ")
     tlname = input("Enter Teacher's Lastame: ")
-    tregis = input("Enter Teacher's registration: ")
+    while True:
+        tregis = input("Enter Teacher's registration: ")
+        try:
+            tregis = int(tregis)
+            break
+        except:
+            print("Teacher's id must be a number")
     cur.execute("""INSERT INTO Teachers (Name,Lastname,Registration_number) VALUES (?,?,?)""",(tname,tlname,tregis))
     con.commit()
     con.close()
     return Teacher(name=tlname,lastname=tlname,Registration_Number=tregis)
 
-def show_teachers():
+def showTeachers():
     con = db.databaseManage()
     cur = con.cursor()
-    print("Showing all teachers")
-    print("===================================")
+    print("------ Showing Teachers ------")
     print("|  Name  |  Lastname  |  Tuition  |")
-    print("===================================\n")
+    print("-----------------------------------")
     cur.execute("""SELECT Name,Lastname,Registration_Number FROM Teachers WHERE LENGTH(Name) != 0""")
     teachgerQueryresponse = cur.fetchall()
     if teachgerQueryresponse is None:
-        print("There must be a error.")
+        print("There's not teachers?")
     else:
-        for Tname,Tlastname,Registration in teachgerQueryresponse:
-            print(f"{Tname} - {Tlastname} - {Registration}")
+        for Tname, Tlastname, Registration in teachgerQueryresponse:
+            print(f"{Tname} {Tlastname}: {Fore.GREEN + str(Registration)}")
+    print()
     con.close()
+    input("Click to continue: ")
 
 
-'''Enrollement'''
+"""Enrollement"""
+
 def enroll_student():
-    U.Clear()
     con = db.databaseManage()
     cur = con.cursor()
     print("Enroll Student Menu")
@@ -251,16 +273,13 @@ def enroll_student():
         print(f"Course: -{name}- | Duration: -{round(float(duration/60))}- Hours | Rating: {rating}/5 | Teacher: -{teacher}-")
     print("Select a course to enroll")
     ces = input(">> ")
-    cur.execute("SELECT Course_ID FROM Courses WHERE Course_Topic = ?",(ces,))
+    cur.execute("SELECT Course_ID FROM Courses WHERE Course_Topic = ?", (ces,))
     resid = cur.fetchone()
     if resid:
-        cur.execute("""INSERT INTO Enrollment (Enrollment_Date,Coursid,Stuid) VALUES (?,?,?)""",(formatDate,resid[0],studi))
-        print("Enrollment successfully")
+        cur.execute("""INSERT INTO Enrollment (Enrollment_Date,Coursid,Stuid) VALUES (?,?,?)""", (formatDate, resid[0], studi))
         sleep(2)
-        U.Clear()
+        print("Enrollment successfully")
     con.close()
-
-
 
 def drop_student_data():
     con = db.databaseManage()
@@ -269,15 +288,16 @@ def drop_student_data():
     # Obtener el id del usuario
     print("Enter the Student Number")
     dropsid = input(">> ")
-    cur.execute("""SELECT nombre from Student where Student_id = ?""",(dropsid,))
+    cur.execute("""SELECT nombre from Student where Student_id = ?""", (dropsid,))
     dropname = cur.fetchone()
-    if dropname == None:
+    if dropname is None:
         print("no name with account number")
     else:
-        drop_student_show_enrolled(dropsid)
-        return (dropname)
+        return dropsid, dropname[0]
 
-def drop_student_show_enrolled(dropsid):
+def drop_student_show_enrolled():
+    dropsid, name = drop_student_data()
+
     con = db.databaseManage()
     cur = con.cursor()
     courses = []
@@ -287,42 +307,45 @@ def drop_student_show_enrolled(dropsid):
             ON Student.Student_id = Enrollment.Stuid
         JOIN Courses
             ON Enrollment.Coursid = Courses.Course_ID
-        WHERE Student_id = ?                    
-    """,(dropsid,))
+        WHERE Student_id = ?""", (dropsid,))
     rows = cur.fetchall()
-    if not rows: #fetch all devuelve una lista vacia en caso de no tener coincidencia, no devuelve none como fetchone, y las quieries se gastan
+    # fetch all devuelve una lista vacia en caso de no tener coincidencia, no devuelve none como fetchone, y las quieries se gastan
+    if not rows:
         print(f"There no coincidences for {drop_student_data()}")
     else:
         print(f"Courses where {drop_student_data()} is enrolled")
         for courserolled in rows:
             courses.append(courserolled[0])
-    drop_student(courses)
+    return courses, name
 
-def drop_student(courses):
+def drop_student():
+    courses, name = drop_student_show_enrolled()
     con = db.databaseManage()
     cur = con.cursor()
     for course in courses:
-        print("- ",course)
+        print("- ", course)
     coursedropselec = input("Which course should you drop him from? (press enter to cancel): ")
-    if not coursedropselec in courses:
+    if coursedropselec not in courses:
         print("The user must be registered in the course from which they wish to be removed")
     else:
         # sacar el id del conso
-        cur.execute("SELECT Course_ID FROM Courses WHERE Course_Topic LIKE ?",(f"%{coursedropselec}%",))
+        cur.execute("SELECT Course_ID FROM Courses WHERE Course_Topic LIKE ?", (f"%{coursedropselec}%",))
         idcourse = cur.fetchone()
-        cur.execute("SELECT Student_id from Student WHERE nombre LIKE ?",(f"%{...}%",))
+        cur.execute("SELECT Student_id from Student WHERE nombre LIKE ?", (f"%{name}%",))
         idstudent = cur.fetchone()
-        if idcourse == None and idstudent == None:
-            print("there's no coincicences")
+        if idcourse is None and idstudent is None:
+            print("There's no coincidences")
         else:
             # eliminar ya al usuario
-            cur.execute("""DELETE FROM Enrollment WHERE Stuid = ? AND Coursid = ?""",(idstudent[0],idcourse[0]))
-            if cur.rowcount() > 0:
-                U.Clear()
+            cur.execute("""DELETE FROM Enrollment WHERE Stuid = ? AND Coursid = ?""", (idstudent[0], idcourse[0]))
+            if cur.rowcount() == 1:
                 print(f"The student has been dropped from the course {coursedropselec}.")
                 print("Returnig to menu...")
                 sleep(1)
-                U.Clear()
             else:
                 print("An Error ocurred during the deleting")
     con.close()
+
+
+# Podemos convertir los datos del query con row_factory
+

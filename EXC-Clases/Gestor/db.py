@@ -9,7 +9,7 @@ def databaseManage():
         conn = sqlite3.connect(file)
         return conn
     except sqlite3.OperationalError as o:
-        print(f"Operational error{i}")
+        print(f"Operational error{o}")
     except sqlite3.IntegrityError as i:
         print(f"Integrity error{i}")
     except sqlite3.Error as e:

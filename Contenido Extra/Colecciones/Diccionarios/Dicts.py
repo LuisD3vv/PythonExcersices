@@ -27,6 +27,9 @@ usuario.popitem()  # Elimina y devuelve el último par clave:valor
 print(usuario.keys())  # dict_keys (['Nombre','Edad']) # Claves del diccionario
 print(usuario.values())  # dict_values([Lissandro,21]) # Valores del diccionario
 print(usuario.items())  # dict_items(('Nombre','Lissandro')('Edad',21)) # claves y su valor del indice
+print(usuario.get("edad",0))
+usuario.update()
+copia = usuario.copy() # una copia total
 
 # Recorrer un elemento
 
