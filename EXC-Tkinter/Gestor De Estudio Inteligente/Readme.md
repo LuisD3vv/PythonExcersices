@@ -1,129 +1,242 @@
 # 📘 Gestor Inteligente de Estudio
 
-## 🎯 Objetivo del proyecto
-Crear una aplicación en Python con interfaz gráfica que ayude al usuario a decidir qué estudiar, basándose en su historial, dificultad percibida y tiempo sin repaso.
+## Versión Simplificada (MVP) + Roadmap de Construcción
 
-No es una agenda.
-Es un sistema de apoyo a decisiones.
+> No es una agenda. No es un tracker. No es un planner.
+> Es un **sistema de apoyo a decisiones de estudio**.
 
 ---
 
-## 🧠 Conceptos principales
+# 🎯 Objetivo del proyecto
 
-### 📌 Tema
+Crear una aplicación en Python que ayude al usuario a decidir **qué estudiar**, basándose en reglas simples de prioridad.
+
+No busca organizar horarios.
+Busca **reducir fricción mental** y evitar la procrastinación por indecisión.
+
+---
+
+# 🧠 Versión mínima viable (MVP)
+
+Esta es la versión reducida, realista y construible:
+
+## 📌 Tema
+
 Representa una unidad de estudio.
 
-**Información que contiene:**
-- Nombre del tema
-- Materia o categoría
-- Nivel de dificultad percibida
-- Tiempo total estudiado
-- Fecha del último estudio
-- Estado actual (activo, olvidado, dominado)
+**Datos:**
+
+* nombre
+* dificultad (1–5)
+* ultimo_estudio (fecha)
+* total_tiempo (minutos)
 
 **Responsabilidades:**
-- Actualizar su propio historial
-- Calcular su nivel de prioridad
-- Decidir si necesita repaso
+
+* Actualizar su historial
+* Exponer datos para cálculo de prioridad
 
 ---
 
-### 📌 Sesión de estudio
-Representa un evento concreto de estudio.
+## 📌 Sesión de estudio
 
-**Información que contiene:**
-- Tema asociado
-- Duración
-- Fecha
-- Observaciones (opcional)
+Representa un evento de estudio.
+
+**Datos:**
+
+* tema
+* duracion
+* fecha
 
 **Responsabilidades:**
-- Modificar los datos del tema
-- Servir como registro histórico
+
+* Actualizar datos del tema
+* Servir como registro histórico
 
 ---
 
-### 📌 Motor de prioridad
-Es la inteligencia del sistema.
+## 🧠 Motor de prioridad (simple)
 
-**Factores que analiza:**
-- Dificultad del tema
-- Días sin estudiar
-- Tiempo total invertido
-- Frecuencia de repaso
+Regla inicial:
 
-**Decisiones que toma:**
-- Ordenar temas por urgencia
-- Detectar temas evitados
-- Recomendar acciones
+```
+prioridad = dias_sin_estudiar * dificultad
+```
+
+**Factores:**
+
+* Días sin estudiar
+* Dificultad percibida
+
+**Decisión:**
+
+* Ordenar temas por urgencia
 
 ---
 
-## 🪟 Interfaz gráfica (Tkinter)
+# 🪟 Interfaz mínima
 
-### Ventana principal
+Una sola ventana (Tkinter):
+
 **Muestra:**
-- Lista de temas
-- Prioridad visual (colores u orden)
-- Estado general del estudio
+
+* Lista de temas
+* Prioridad visual (orden + colores)
 
 **Permite:**
-- Seleccionar un tema
-- Acceder a acciones principales
+
+* Agregar tema
+* Registrar sesión de estudio
 
 ---
 
-### Ventana de registro
-**Permite:**
-- Agregar nuevos temas
-- Registrar sesiones de estudio
-- Ajustar dificultad percibida
+# 💾 Gestión de datos
+
+**Persistencia local:**
+
+Archivo único:
+
+```
+data.json
+```
+
+Estructura:
+
+```json
+{
+  "temas": [],
+  "sesiones": []
+}
+```
 
 ---
 
-### Ventana de análisis (futuro)
-**Muestra:**
-- Resúmenes
-- Tendencias
-- Alertas de temas descuidados
+# 🧱 Arquitectura mínima
+
+```
+main.py      → arranque del sistema
+models.py    → Tema, Sesion
+logic.py     → cálculo de prioridad
+storage.py   → guardar/cargar JSON
+ui.py        → interfaz Tkinter
+```
 
 ---
 
-## 🗂️ Gestión de datos
+# 🔄 Flujo del sistema
 
-### Almacenamiento
-- Persistencia local
-- Formato simple y legible
-
-**Responsabilidades:**
-- Guardar el estado completo del sistema
-- Recuperar datos al iniciar la aplicación
-- Evitar pérdida de información
+1. Cargar datos
+2. Calcular prioridades
+3. Mostrar temas ordenados
+4. Usuario registra sesión
+5. Actualizar datos
+6. Guardar automáticamente
 
 ---
 
-## 🔄 Flujo general del sistema
-1. El usuario abre la aplicación
-2. El sistema carga los datos guardados
-3. Se calculan prioridades
-4. Se muestran sugerencias visuales
-5. El usuario registra una sesión de estudio
-6. El sistema se actualiza
-7. Los datos se guardan automáticamente
+# 🧪 Roadmap de construcción
+
+## 🥉 Fase 1 — Base lógica (sin interfaz)
+
+* CLI
+* JSON
+* Clases Tema y Sesion
+* Cálculo de prioridad
+* Registro manual
+
+Objetivo: **funcionalidad pura**
 
 ---
 
-## 🧪 Posibles mejoras futuras
-- Estadísticas visuales
-- Filtros por materia
-- Sistema de metas
-- Exportación de datos
-- Notificaciones
+## 🥈 Fase 2 — Estructura limpia
+
+* Separación de archivos
+* Arquitectura modular
+* Persistencia estable
+
+Objetivo: **ingeniería de software**
 
 ---
 
-## 🧭 Principios del proyecto
-- Primero la lógica, luego la interfaz
-- Una responsabilidad por componente
-- Decisiones explícitas
-- Código legible antes que código corto
+## 🥇 Fase 3 — Interfaz básica
+
+* Tkinter
+* Lista de temas
+* Botones básicos
+* Colores por prioridad
+
+Objetivo: **usabilidad mínima**
+
+---
+
+## 🧠 Fase 4 — Motor inteligente
+
+* Más factores
+* Historial
+* Frecuencia
+* Estados
+
+Objetivo: **sistema de decisión real**
+
+---
+
+## 📊 Fase 5 — Análisis
+
+* Resúmenes
+* Tendencias
+* Alertas
+* Visualización
+
+Objetivo: **sistema de autogestión del aprendizaje**
+
+---
+
+# 🧭 Principios del proyecto
+
+* Primero lógica, luego interfaz
+* Una responsabilidad por módulo
+* Código legible > código corto
+* Sistemas > scripts
+* Pensamiento estructural > copiar código
+
+---
+
+# 🗿 Filosofía del proyecto
+
+Esto no es un ejercicio.
+
+Es un **sistema personal de aprendizaje**.
+
+Entrena:
+
+* pensamiento lógico
+* arquitectura
+* modelado de datos
+* diseño de sistemas
+* ingeniería real
+* disciplina
+* visión de proyecto
+
+---
+
+# 🧠 Frase guía
+
+> No construyas todo.
+> Construye el núcleo.
+> Luego crece.
+
+---
+
+# 🚀 Objetivo final
+
+Tener una herramienta que:
+
+* piense contigo
+* decida contigo
+* te quite fricción mental
+* te diga qué estudiar
+
+No una agenda.
+No un calendario.
+
+Un **sistema inteligente personal**.

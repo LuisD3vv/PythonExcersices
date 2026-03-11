@@ -1,135 +1,150 @@
 from time import sleep
-from colorama import Fore, Back
+from colorama import Fore, Back,Style
 import Utilities as U
 import services as S
 
+"""
+    Autor:
+    Luis Alejandro Aguilar Soberanes
 
-def Studentmenu():
-    U.Clear()
-    print("Students Managment Menu\n")
-    print("="*24)
-    print("1) Add Student\n2) Delete Student\n3) Modify Student Info\n4) View all Students\n5) Search Student by")
-    print("="*24)
-    print("What do you want to do?")
-    estudentOption = input(">> ")
+    Modulo de Funciones Procedimentales.
+"""
+
+def students_menu()-> None:
+    U.clear()
+    print(f"{Back.BLACK} {Fore.GREEN}--= Menu de administracion de estudiante =--{Style.RESET_ALL}")
+    U.format()
+    print("1) Nuevo estudiante\n2) Dar de baja estudiante\n3) Modificar estudiante\n4) Todos los estudiantes\n5) Buscar estudiante")
+    U.format()
+    print("Que quieres hacer?")
+    estudentOption = input(">> ").strip()
     if estudentOption == "":
         pass
     else:
         match estudentOption:
             case '1':
-                S.add_student()
+                S.nuevo_alumno()
             case '2':
-                S.drop_student_data()
+                S.eliminar_alumno()
             case '3':
-                S.modify_student()
+                S.modificar_alumno()
             case '4':
-                S.show_students()
+                S.mostrar_estudiantes()
             case '5':
-                S.search_student()
+                S.buscar_estudiante()
             case _:
-                print(Back.RED + Fore.WHITE + f"Please select a option")
-    U.Clear()
+                U.clear()
+                print(f"{Back.RED} {Fore.WHITE}Porfavor selecciona una opcion.{Style.RESET_ALL}\n")
+    U.clear()
 
-def CourseMenu():
-    U.Clear()
-    print("="*28)
-    print("--= Course's menu option =--")
-    print("1) Show courses\n2) Add Course")
-    print("="*28)
+def courses_menu()-> None:
+    U.clear()
+    U.format()
+    print(f"{Back.BLACK} {Fore.GREEN}--= Cursos =--{Style.RESET_ALL}\n")
+    print("1) Mostrar Cursos\n2) Nuevo Curso\n3) Filtrar Curso\n4) Buscar Curso\n")
+    U.format()
+    print("Que quieres hacer?")
     courseoption = input(">> ")
     match courseoption:
         case '1':
-            S.showCourses()
+            S.mostrar_curso()
         case '2':
-            S.addCourse()
+            S.nuevo_curso()
+        case '3':
+            S.buscar_curso('1')
+        case '4':
+            S.buscar_curso('2')
         case _:
-            print(Back.RED + Fore.WHITE +f"Please select a option")
+            print(f"{Back.RED} {Fore.WHITE}Porfavor selecciona una opcion.{Style.RESET_ALL}\n")
+    U.format()
+    U.clear()
 
-    print("="*28)
-    U.Clear()
-
-def Teachermenu():
-    print("="*28)
-    print("--= Teacher's menu option =--")
-    print("1) Show teachers\n2) Add teacher")
-    print("="*28)
+def teachers_menu()-> None:
+    U.clear()
+    U.format()
+    print(f"{Back.BLACK} {Fore.GREEN}--= Maestros =--{Style.RESET_ALL}\n")
+    print("1) Maestros Registrados\n2) Nuevo Maestro\n3) Filtrar\n4) Buscar Maestro\n")
+    U.format()
+    print("Que quieres hacer?")
     teacheroption = input(">> ")
     match teacheroption:
         case '1':
-            S.showTeachers()
+            S.mostrar_maestros()
         case '2':
-            S.addTeacher()
+            S.nuevo_maestro()
         case _:
-            print(Back.RED + Fore.WHITE + f"Please select a option")
+            print(f"{Back.RED} {Fore.WHITE}Porfavor selecciona una opcion.{Style.RESET_ALL}\n")
+    U.format()
+    U.clear()
 
-    print("="*28)
-    U.Clear()
-
-def Enrollementmenu():
-    U.Clear()
-    print("-"*30)
-    print("--= Enrollement's menu option =--")
-    print("Enrolled Options")
-    print("1) Enroll Student \n2) Drop a student from a course")
-    print("="*28)
+def enrollements_menu()-> None:
+    U.clear()
+    U.format()
+    print(f"{Back.BLACK} {Fore.GREEN}--= Inscripciones =--{Style.RESET_ALL}\n")
+    print("1) Inscribir estudiante \n2) Eliminar a un estudiante de un curso")
+    U.format()
+    print("Que quieres hacer?")
     platOption = input(">> ")
     match platOption:
         case '1':
-            S.enroll_student()
+            S.inscribir()
         case '2':
             # Pendiente
-            S.drop_student()
+            S.dar_de_baja()
         case _:
-            print(Back.RED + Fore.WHITE +f"Please select a option")
+            print(f"{Back.RED} {Fore.WHITE}Porfavor selecciona una opcion.{Style.RESET_ALL}\n")
+    U.format()
+    U.clear()
 
-    print("="*28)
-    U.Clear()
 
-'''
-    main function to control the others and show the options, is a good escalable menu.
-'''
-def main():
-    options = ["Manage Students <-", "Manage Courses", "Manage Teacher's", "Enrollment Options", "Clear Terminal", "Exit ->"]
-    print("Loading...")
+def main()->None:
+    '''
+    Funcion centrar para manejar las funciones extras1
+     de cada clase
+    Args:
+        none
+    Returns:
+        none
+    '''
+    options = ["Administrar estudiantes <-", "Administrar cursos", "Administrar maestros", "Inscripciones", "Limpiar consola", "Salir ->"]
+    print("Cargando...")
     sleep(1)
-    U.Clear()
-    print("Success!!")
+    U.clear()
+    print("Listo!!")
     sleep(1)
-    U.Clear()
+    U.clear()
     while True:
         U.print_header()
-
         for i, option in enumerate(options, start=1): # en lugar de que inicie con el 0
-            print(f"{Fore.BLACK + str(i)}.- {Fore.YELLOW + option}")
+            print(f"{Fore.BLACK}{str(i)}.- {Fore.YELLOW}{option}{Style.RESET_ALL}")
         print("-"*32)
-        print("Type the option or number")
-        opcion = input(">> ")
+        print("Escribe la opcion o ingresa el numero.")
+        opcion = input(">> ").capitalize()
         if not isinstance(opcion, str) or not opcion.strip():
-            print(Back.RED + Fore.WHITE + f"Please select a option")
+            print(f"{Back.RED} {Fore.WHITE}Porfavor selecciona una opcion.{Style.RESET_ALL}\n")
         else:
             match opcion:
                 case '1' | 'Students':
-                    Studentmenu()
+                    students_menu()
                 case '2' | 'Courses':
-                    CourseMenu()
+                    courses_menu()
                 case '3' | 'Teachers':
-                    Teachermenu()
+                    teachers_menu()
                 case '4' | 'Enrollment':
-                    Enrollementmenu()
-                case '5' | 'Clear':
+                    enrollements_menu()
+                case '5' | 'clear':
                     print("Cleaning...")
                     sleep(1)
-                    U.Clear()
+                    U.clear()
                 case '6' | 'Exit':
-                    U.Clear()
-                    print("Exiting...")
+                    U.clear()
+                    print("Saliendo...")
                     sleep(1)
-                    U.Clear()
+                    U.clear()
                     break
                 case _:
-                    print(Back.RED + Fore.WHITE + f"Please select a option")
-    U.Clear()
-
+                    print(f"{Back.RED} {Fore.WHITE}Porfavor selecciona una opcion.{Style.RESET_ALL}\n")
+    U.clear()
 
 main()
 

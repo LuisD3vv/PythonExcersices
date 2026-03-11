@@ -11,3 +11,10 @@ def forma(a,b):
 
 
 forma(2,1)
+
+
+"""
+
+utilizar sqlite3.connect(":memory") solo en test unitarios / unitt testing
+
+"""

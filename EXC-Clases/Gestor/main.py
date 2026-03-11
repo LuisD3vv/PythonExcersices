@@ -1,63 +1,75 @@
-from datetime import datetime
 
 """
     Como repaso rapido,  los getter y setter son metodos usados para controlar el acceso a los atributos de clase, asegurando la encapsulacion de la informacion y permitiendo una validacion.
 """
-date = datetime.now()
-formatDate = date.strftime("%d/%m/%Y")
 
 # clases de dominio, solo leen, procesan y validan datos, cero consola
 
-class Student:
-	def __init__(self, name, lastname, accountID):
-		self.name = name
-		self.lastname = lastname
-		self.accountID = accountID
+class Estudiante:
+	"""Clase estudiante"""
+	def __init__(self, nombre, apellido, numero_de_cuenta,correo='sin@correo.com'):
+		self.nombre = nombre
+		self.apellido = apellido
+		self.numero_de_cuenta = numero_de_cuenta
+		self.correo = correo
 
 	# decorador que convierte un metodo en un atributo de solo lectura y nos permite usar el punto
 	# instancia.objeto = tal
 	@property
-	def name(self):
-		"""getter for name"""
-		return self._name
+	def nombre(self):
+		"""getter for nombre"""
+		return self._nombre
 
-	@name.setter
-	def name(self, newName):
-		"""setter for name validation"""
-		if not isinstance(newName, str) or not newName.strip():
-			raise ValueError("Name must be a non-empty string.")
-		elif len(newName) < 3:
-			raise ValueError("the name length must be more than 5 words")
-		self._name = newName
+	@nombre.setter
+	def nombre(self, nuevo_nombre):
+		"""setter for nombre validation"""
+		if not isinstance(nuevo_nombre, str) or not nuevo_nombre.strip():
+			raise ValueError("nombre must be a non-empty string.")
+		elif len(nuevo_nombre) < 3:
+			raise ValueError("the nombre length must be more than 5 words")
+		self._nombre = nuevo_nombre
 
 	@property
-	def lastname(self):
-		"""getter for lastname"""
-		return self._lastname
+	def apellido(self):
+		"""getter for apellido"""
+		return self._apellido
 
-	@lastname.setter
-	def lastname(self, newlastname):
-		"""setter for lastname validation"""
-		if not isinstance(newlastname, str) or not newlastname.strip():
+	@apellido.setter
+	def apellido(self, nuevo_apellido):
+		"""setter for apellido validation"""
+		if not isinstance(nuevo_apellido, str) or not nuevo_apellido.strip():
 			raise ValueError("Lastame must be a non-empty string.")
-		elif len(newlastname) < 4:
+		elif len(nuevo_apellido) < 4:
 			raise ValueError("the name length must be more than 5 words")
-		self._lastname = newlastname
+		self._apellido = nuevo_apellido
 
 	@property
-	def accountID(self):
-		"""getter for accountid"""
-		return self._accountID
+	def numero_de_cuenta(self):
+		"""getter for numero_de_cuenta"""
+		return self._numero_de_cuenta
 
-	@accountID.setter
-	def accountID(self, newid):
-		"""setter for accountid validation"""
-		if not isinstance(newid, int) or newid < 0:
+	@numero_de_cuenta.setter
+	def numero_de_cuenta(self, nuevo_id):
+		"""setter for numero_de_cuenta validation"""
+		if not isinstance(nuevo_id, int) or nuevo_id < 0:
 			raise ValueError("The number must be no negative integer.")
-		self._accountID = newid
+		self._numero_de_cuenta = nuevo_id
+
+	@property
+	def correo(self):
+		"""getter for accountid"""
+		return self._correo
+
+	@correo.setter
+	def correo(self, nuevo_correo):
+		"""setter for accountid validation"""
+		if not isinstance(nuevo_correo, str)or not nuevo_correo.strip():
+			raise ValueError("The number must be no negative integer.")
+		self._correo = nuevo_correo
 
 
-class Course:
+class Curso:
+	"""Clase Courso"""
 	def __init__(self, topic, teacher, rating, duration):
 		self.topic = topic
 		self.teacher = teacher
@@ -105,7 +117,8 @@ class Course:
 		self._teacher = newteacher
 
 
-class Teacher:
+class Maestro:
+	"""Clase Maestro"""
 	def __init__(self, name, lastname, Registration_Number):
 		self.name = name
 		self.lastname = lastname
