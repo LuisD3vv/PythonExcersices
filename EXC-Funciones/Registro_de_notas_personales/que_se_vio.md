@@ -10,3 +10,6 @@ Base de datos
 Persistencia (guardar)
 validaciones
 modulos (os y otros, como re)
+
+Web browser
+OS
