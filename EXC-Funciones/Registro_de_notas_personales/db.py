@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-import sqlite3
+import sqlite3 
 from pathlib import Path
 
 # con Path(file) ya obtenemos la ruta de lo que este adentro y sera un objeto path
@@ -17,12 +17,8 @@ class Notas_safe(sqlite3.Connection):
         super().__init__(*args, **kwargs)
     # mejor manera para trabajr con metodos y mueveSQlo
     def ejecucion_segura(self, query,params=()):
-        try:
-            cur = self.execute(query, params)
-            return cur.fetchall()
-        except sqlite3.Error as e:
-            print(f"Error en query: {e}")
-            raise
+        self.execute(sql, params)
+        self.commit()
 
     def notas_dmd(self,query,params=()):
         try:
@@ -65,7 +61,7 @@ def cargar_db():
 
 def iniciar_bases_de_datos():
     with cargar_db() as con:
-        notas = Notas_safe("""
+        notas = con.ejecucion_segura("""
         CREATE TABLE IF NOT EXISTS notas (
         id_nota  INTEGER PRIMARY KEY, -- Autoincrement lento y pesado
         titulo text NOT NULL,

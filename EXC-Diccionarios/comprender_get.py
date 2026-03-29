@@ -19,6 +19,16 @@ scores = {'ana':10}
 add_scores(scores, 'ana', 5)
 add_scores(scores, 'pedro', 3)
 
+
+""" Logica similar a esto:
+if x in conteo:
+    conteo[x] = conteo[x] + 1
+else:
+    (este vendria siendo (name,0) )
+    conteo[x] = 1
+"""
+
+
 # Ejercicio 3
 
 def apariciones(numbers):
@@ -26,6 +36,8 @@ def apariciones(numbers):
     for x in numbers:
         conteo[x] = conteo.get(x,0) + 1
         # valor = [incremento en caso de ser la misma clave o en este caso numero]
+        # si la clave ya existe -> toma su valor actual + 1
+        # si no existe toma 0+1 = 1
     return conteo
 
 numbers = [1,12,3,3,4,4,5,5,5,5,9]

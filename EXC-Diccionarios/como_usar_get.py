@@ -27,9 +27,7 @@ del producto["precio"]
 nombre = producto.pop("nombre")
 print(nombre)
 
-
 print(producto)
-
 
 # Metodos utiles de los diccionarios
 
